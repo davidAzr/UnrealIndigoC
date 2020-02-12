@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Enemy.h"
-#include "GameFramework/FloatingPawnMovement.h"
+//#include "GameFramework/FloatingPawnMovement.h"
+#include "EnemyMovement.h"
 #include "Components/StaticMeshComponent.h"
 #include "Level/CameraRegion.h"
 
@@ -12,9 +13,9 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 
 	m_enemyMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	m_movementComponent = CreateDefaultSubobject<UFloatingPawnMovement>("Movement Component");
-
 	SetRootComponent(m_enemyMesh);
+	m_movementComponent = CreateDefaultSubobject<UEnemyMovement>("Movement Component");
+
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +28,7 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
 }
 
 // Called to bind functionality to input
