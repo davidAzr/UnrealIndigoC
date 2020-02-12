@@ -15,22 +15,30 @@ ACameraRegion::ACameraRegion()
 		UE_LOG(LogTemp, Warning, TEXT("Actor begin overlap"))
 
 	m_triggerVolume = CreateDefaultSubobject<UBoxComponent>("Region Volume");
-	m_triggerVolume->SetGenerateOverlapEvents(true);
-	m_triggerVolume->SetVisibility(false);
-	this->SetRootComponent(m_triggerVolume);
 	m_cameraComponent = CreateDefaultSubobject<UCameraComponent>("Camera");
+	this->SetRootComponent(m_triggerVolume);
 
 	FAttachmentTransformRules attachmentRules(EAttachmentRule::KeepRelative, true);
 	m_cameraComponent->AttachToComponent(m_triggerVolume, attachmentRules);
 
-	// Event Binding
-	m_triggerVolume->OnComponentBeginOverlap.AddDynamic(this, &ACameraRegion::OnBeginOverlap);
+	m_isActiveRegion = false;
+}
+
+bool ACameraRegion::GetIsActiveCameraRegion()
+{
+	return m_isActiveRegion;
 }
 
 // Called when the game starts or when spawned
 void ACameraRegion::BeginPlay()
 {
 	Super::BeginPlay();
+	m_triggerVolume->SetGenerateOverlapEvents(true);
+	m_triggerVolume->SetVisibility(false);
+
+	// Event Binding
+	m_triggerVolume->OnComponentEndOverlap.AddDynamic(this, &ACameraRegion::OnEndOverlap);
+	m_triggerVolume->OnComponentBeginOverlap.AddDynamic(this, &ACameraRegion::OnBeginOverlap);
 	
 }
 
@@ -39,7 +47,17 @@ void ACameraRegion::BeginPlay()
 void ACameraRegion::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor != nullptr && OtherActor == GetWorld()->GetFirstPlayerController()->GetPawn()) {
+		UE_LOG(LogTemp, Warning, TEXT("ACTOR ENTERS REGION"))
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this, 0.5, EViewTargetBlendFunction::VTBlend_Cubic);
+		m_isActiveRegion = true;
+	}
+}
+
+void ACameraRegion::OnEndOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor != nullptr && OtherActor == GetWorld()->GetFirstPlayerController()->GetPawn()) {
+		UE_LOG(LogTemp, Warning, TEXT("ACTOR LEAVES REGION"))
+		m_isActiveRegion = false;
 	}
 }
 
@@ -47,6 +65,5 @@ void ACameraRegion::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 void ACameraRegion::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

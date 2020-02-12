@@ -20,8 +20,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	class UStaticMeshComponent* m_enemyMesh;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	//class UFloatingPawnMovement* m_movementComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	class UFloatingPawnMovement* m_movementComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class ACameraRegion* m_cameraRegion;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	float m_combatDistance = 30.f;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -32,6 +38,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	ACameraRegion* GetCameraRegion() const;
+
+	float GetCombatDistance() const;
 
 	
 	
