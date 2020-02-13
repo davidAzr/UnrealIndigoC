@@ -26,8 +26,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACameraRegion* m_cameraRegion;
 
+	// Enemy Stats
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	float m_combatDistance = 30.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	float m_attackRate= 1.f;
+
+	// Member variables
+	float m_lastAttackTime;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -43,6 +50,8 @@ public:
 
 	float GetCombatDistance() const;
 
-	
+	void AttackPlayer();
+
+	void FacePlayer(AActor* player);
 	
 };

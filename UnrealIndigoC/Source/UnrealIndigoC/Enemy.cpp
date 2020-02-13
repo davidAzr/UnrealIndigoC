@@ -5,6 +5,7 @@
 #include "EnemyMovement.h"
 #include "Components/StaticMeshComponent.h"
 #include "Level/CameraRegion.h"
+#include "Engine/World.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -22,6 +23,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	m_lastAttackTime = 0.f;
 }
 
 // Called every frame
@@ -46,5 +48,24 @@ ACameraRegion* AEnemy::GetCameraRegion() const
 float AEnemy::GetCombatDistance() const
 {
 	return m_combatDistance;
+}
+
+void AEnemy::AttackPlayer()
+{
+	auto currentTime = GetWorld()->GetTimeSeconds();
+	if (currentTime - m_lastAttackTime >= m_attackRate) {
+		UE_LOG(LogTemp, Warning, TEXT("Attacking player"));
+		m_lastAttackTime = currentTime;
+	}
+}
+
+void AEnemy::FacePlayer(AActor* player)
+{
+	auto directionToPlayer = player->GetActorLocation() - GetActorLocation();
+	auto StartRot = GetActorRotation();
+	auto TargetRot = (directionToPlayer * -1).Rotation();
+	auto Speed = 3.f;
+
+	SetActorRotation(FMath::RInterpTo(StartRot, TargetRot, GetWorld()->GetDeltaSeconds(), Speed));
 }
 

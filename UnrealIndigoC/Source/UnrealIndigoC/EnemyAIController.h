@@ -18,6 +18,9 @@ protected:
 	AEnemyAIController();
 
 	class AEnemy* m_enemyControlled;
+	class AActor* m_playerActor;
+
+	bool m_chasing;
 	
 	virtual void BeginPlay() override;
 
