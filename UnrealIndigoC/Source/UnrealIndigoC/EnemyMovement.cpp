@@ -6,7 +6,6 @@
 #include "Engine/World.h"
 
 void UEnemyMovement::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed) {
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *MoveVelocity.ToString())
 
 	auto newVelocity = MoveVelocity;
 	auto StartRot = UpdatedComponent->GetComponentRotation();

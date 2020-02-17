@@ -23,6 +23,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	m_enemyMesh->SetNotifyRigidBodyCollision(true);
 	m_lastAttackTime = 0.f;
 }
 
