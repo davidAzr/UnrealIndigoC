@@ -33,8 +33,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	float m_attackRate= 1.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	float m_maxHealth = 50.f;
+
 	// Member variables
 	float m_lastAttackTime;
+
+	float m_currentHealth;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -50,8 +55,10 @@ public:
 
 	float GetCombatDistance() const;
 
-	void AttackPlayer();
+	void AttackPlayer(AActor* player);
 
 	void FacePlayer(AActor* player);
+
+	void RecieveDamage(float damage);
 	
 };

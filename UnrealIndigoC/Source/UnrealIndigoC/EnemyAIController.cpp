@@ -24,7 +24,7 @@ void AEnemyAIController::Tick(float deltaSeconds)
 	// acceptance radius from MoveTo. Investigate
 	Super::Tick(deltaSeconds);
 	if (m_enemyControlled) {
-		if (m_enemyControlled->GetCameraRegion()->GetIsActiveCameraRegion()) {
+		if (m_enemyControlled->GetCameraRegion() && m_enemyControlled->GetCameraRegion()->GetIsActiveCameraRegion()) {
 			auto distanceToPlayer = m_enemyControlled->GetDistanceTo(m_playerActor);
 			//UE_LOG(LogTemp, Warning, TEXT("%f"), distanceToPlayer)
 			if (!m_chasing) {
@@ -39,7 +39,7 @@ void AEnemyAIController::Tick(float deltaSeconds)
 				else {
 					// Not following because we are in combat range
 					m_enemyControlled->FacePlayer(m_playerActor);
-					m_enemyControlled->AttackPlayer();
+					m_enemyControlled->AttackPlayer(m_playerActor);
 					//UE_LOG(LogTemp, Warning, TEXT("Attacking player"))
 				}
 			}

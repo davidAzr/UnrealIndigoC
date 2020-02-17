@@ -8,10 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Projectile.h"
 #include "Engine/World.h"
-#include "UObject/ConstructorHelpers.h"
-#include "Components/SkeletalMeshComponent.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // AUnrealIndigoCCharacter
@@ -49,10 +47,6 @@ AUnrealIndigoCCharacter::AUnrealIndigoCCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
-
-	static ConstructorHelpers::FClassFinder<AProjectile> ClassFinder(TEXT("Blueprint'/Game/IndigoGame/BP_IndigoProjectile.BP_IndigoProjectile_C'"));
-	if (ClassFinder.Class)
-		m_currentProjectileType = ClassFinder.Class;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -82,14 +76,6 @@ void AUnrealIndigoCCharacter::SetupPlayerInputComponent(class UInputComponent* P
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AUnrealIndigoCCharacter::OnResetVR);
-}
-
-
-void AUnrealIndigoCCharacter::Shoot()
-{
-	FActorSpawnParameters spawnParameters;
-	auto bulletStart = GetMesh()->GetSocketTransform("ProjectileSocket");
-	GetWorld()->SpawnActor<AProjectile>(m_currentProjectileType, bulletStart.GetLocation(), bulletStart.GetRotation().Rotator(), spawnParameters);
 }
 
 void AUnrealIndigoCCharacter::OnResetVR()

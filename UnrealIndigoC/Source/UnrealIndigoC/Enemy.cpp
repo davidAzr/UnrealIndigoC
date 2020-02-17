@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Level/CameraRegion.h"
 #include "Engine/World.h"
+#include "IndigoCharacter.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -16,7 +17,7 @@ AEnemy::AEnemy()
 	m_enemyMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	SetRootComponent(m_enemyMesh);
 	m_movementComponent = CreateDefaultSubobject<UEnemyMovement>("Movement Component");
-
+	m_currentHealth = m_maxHealth;
 }
 
 // Called when the game starts or when spawned
@@ -51,12 +52,13 @@ float AEnemy::GetCombatDistance() const
 	return m_combatDistance;
 }
 
-void AEnemy::AttackPlayer()
+void AEnemy::AttackPlayer(AActor* player)
 {
 	auto currentTime = GetWorld()->GetTimeSeconds();
 	if (currentTime - m_lastAttackTime >= m_attackRate) {
 		UE_LOG(LogTemp, Warning, TEXT("Attacking player"));
 		m_lastAttackTime = currentTime;
+		dynamic_cast<AIndigoCharacter*>(player)->RecieveDamage(25.f);
 	}
 }
 
@@ -68,5 +70,13 @@ void AEnemy::FacePlayer(AActor* player)
 	auto Speed = 3.f;
 
 	SetActorRotation(FMath::RInterpTo(StartRot, TargetRot, GetWorld()->GetDeltaSeconds(), Speed));
+}
+
+void AEnemy::RecieveDamage(float damage)
+{
+	m_currentHealth -= damage;
+	if (m_currentHealth <= 0) {
+		Destroy();
+	}
 }
 

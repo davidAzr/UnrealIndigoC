@@ -12,12 +12,11 @@ ACameraRegion::ACameraRegion()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-		UE_LOG(LogTemp, Warning, TEXT("Actor begin overlap"))
-
+	auto defaultScene = CreateDefaultSubobject<USceneComponent>("root");
+	this->SetRootComponent(defaultScene);
 	m_triggerVolume = CreateDefaultSubobject<UBoxComponent>("Region Volume");
 	m_cameraComponent = CreateDefaultSubobject<UCameraComponent>("Camera");
-	this->SetRootComponent(m_triggerVolume);
-
+	
 	FAttachmentTransformRules attachmentRules(EAttachmentRule::KeepRelative, true);
 	m_cameraComponent->AttachToComponent(m_triggerVolume, attachmentRules);
 

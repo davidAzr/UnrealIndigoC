@@ -42,9 +42,11 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	Destroy();
 	if (OtherActor && (OtherActor != this))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Enemy HIT"))
-		if (auto hitActor = dynamic_cast<AEnemy*>(OtherActor) != nullptr)
+		auto hitActor = dynamic_cast<AEnemy*>(OtherActor);
+		if (hitActor != nullptr)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Enemy HIT"))
+			hitActor->RecieveDamage(25.f);
 		}
 	}
 }
