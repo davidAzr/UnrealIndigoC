@@ -4,7 +4,9 @@
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "Engine/World.h"
+#include "Level/EnemySpawnController.h"
 #include "GameFramework/PlayerController.h"
+#include "Level/EnemySpawner.h"
 
 // Sets default values
 ACameraRegion::ACameraRegion()
@@ -12,13 +14,16 @@ ACameraRegion::ACameraRegion()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	auto defaultScene = CreateDefaultSubobject<USceneComponent>("root");
-	this->SetRootComponent(defaultScene);
+	////auto defaultScene = CreateDefaultSubobject<USceneComponent>("root");
 	m_triggerVolume = CreateDefaultSubobject<UBoxComponent>("Region Volume");
+	m_triggerVolume->SetupAttachment(RootComponent);
 	m_cameraComponent = CreateDefaultSubobject<UCameraComponent>("Camera");
 	
 	FAttachmentTransformRules attachmentRules(EAttachmentRule::KeepRelative, true);
-	m_cameraComponent->AttachToComponent(m_triggerVolume, attachmentRules);
+	m_cameraComponent->AttachToComponent(RootComponent, attachmentRules);
+
+	m_spawnController = CreateDefaultSubobject<UEnemySpawnController>("Spawn Controller");
+	m_spawnController->SetCameraRegion(this);
 
 	m_isActiveRegion = false;
 }
@@ -49,6 +54,9 @@ void ACameraRegion::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 		UE_LOG(LogTemp, Warning, TEXT("ACTOR ENTERS REGION"))
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this, 0.5, EViewTargetBlendFunction::VTBlend_Cubic);
 		m_isActiveRegion = true;
+		if (m_spawnController) {
+			m_spawnController->StartSpawning();
+		}
 	}
 }
 
@@ -57,6 +65,9 @@ void ACameraRegion::OnEndOverlap(UPrimitiveComponent * OverlappedComp, AActor * 
 	if (OtherActor != nullptr && OtherActor == GetWorld()->GetFirstPlayerController()->GetPawn()) {
 		UE_LOG(LogTemp, Warning, TEXT("ACTOR LEAVES REGION"))
 		m_isActiveRegion = false;
+		if (m_spawnController) {
+			m_spawnController->StopSpawning();
+		}
 	}
 }
 
@@ -66,3 +77,12 @@ void ACameraRegion::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ACameraRegion::AddSpawnToController(AEnemySpawner * enemySpawner)
+{
+	m_spawnController->AddEnemySpawn(enemySpawner);
+}
+
+void ACameraRegion::DecreaseEnemyCount()
+{
+	m_spawnController->DecreaseEnemyCount();
+}

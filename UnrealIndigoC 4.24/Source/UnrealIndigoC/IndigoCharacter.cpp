@@ -2,7 +2,6 @@
 
 #include "IndigoCharacter.h"
 #include "Projectile.h"
-#include "Engine/World.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/SkeletalMeshComponent.h"
 

@@ -30,6 +30,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Components")
 	class UCameraComponent* m_cameraComponent;
 
+	UPROPERTY(EditAnywhere, Category = "Components")
+	class UEnemySpawnController* m_spawnController;
+
 	// True when is the region where the player is
 	bool m_isActiveRegion;
 
@@ -43,6 +46,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
+	void AddSpawnToController(class AEnemySpawner* enemySpawner);
+
+	void DecreaseEnemyCount();
 	
 };

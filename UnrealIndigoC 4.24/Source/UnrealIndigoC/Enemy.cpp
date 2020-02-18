@@ -47,6 +47,11 @@ ACameraRegion* AEnemy::GetCameraRegion() const
 	return m_cameraRegion;
 }
 
+void AEnemy::SetCameraRegion(ACameraRegion * cameraRegion)
+{
+	m_cameraRegion = cameraRegion;
+}
+
 float AEnemy::GetCombatDistance() const
 {
 	return m_combatDistance;
@@ -77,6 +82,7 @@ void AEnemy::RecieveDamage(float damage)
 	m_currentHealth -= damage;
 	if (m_currentHealth <= 0) {
 		Destroy();
+		m_cameraRegion->DecreaseEnemyCount();
 	}
 }
 

@@ -23,7 +23,7 @@ void AEnemyAIController::Tick(float deltaSeconds)
 	// TODO: The methon now checks for distance manually instead of using
 	// acceptance radius from MoveTo. Investigate
 	Super::Tick(deltaSeconds);
-	if (m_enemyControlled) {
+	if (m_enemyControlled && m_playerActor) {
 		if (m_enemyControlled->GetCameraRegion() && m_enemyControlled->GetCameraRegion()->GetIsActiveCameraRegion()) {
 			auto distanceToPlayer = m_enemyControlled->GetDistanceTo(m_playerActor);
 			//UE_LOG(LogTemp, Warning, TEXT("%f"), distanceToPlayer)
@@ -58,5 +58,8 @@ void AEnemyAIController::Tick(float deltaSeconds)
 				m_chasing = false;
 			}
 		}
+	}
+	else {
+		m_enemyControlled = dynamic_cast<AEnemy*>(GetPawn());
 	}
 }

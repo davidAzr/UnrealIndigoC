@@ -52,6 +52,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	ACameraRegion* GetCameraRegion() const;
+	void SetCameraRegion(ACameraRegion* cameraRegion);
 
 	float GetCombatDistance() const;
 

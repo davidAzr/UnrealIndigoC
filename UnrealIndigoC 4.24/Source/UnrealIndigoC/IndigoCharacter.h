@@ -28,7 +28,7 @@ protected:
 	float m_maxHealth = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	float m_attackRate = 1.f;
+	float m_attackRate = 0.5f;
 
 	float m_currentHealth;
 
