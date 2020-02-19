@@ -63,6 +63,11 @@ float AEnemy::GetCombatDistance() const
 	return m_combatDistance;
 }
 
+float AEnemy::GetCurrentHealth() const
+{
+	return m_currentHealth;
+}
+
 void AEnemy::AttackPlayer(AActor* player)
 {
 	auto currentTime = GetWorld()->GetTimeSeconds();

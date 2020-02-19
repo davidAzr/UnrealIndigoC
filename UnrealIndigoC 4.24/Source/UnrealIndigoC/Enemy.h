@@ -58,6 +58,9 @@ public:
 	void SetCameraRegion(ACameraRegion* cameraRegion);
 
 	float GetCombatDistance() const;
+	
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentHealth() const;
 
 	void AttackPlayer(AActor* player);
 
