@@ -35,7 +35,7 @@ void UEnemySpawnController::TickComponent(float DeltaTime, ELevelTick TickType, 
 	
 	if (m_spawning) {
 		auto currentTime = GetWorld()->GetTimeSeconds();
-		if (m_currentEnemies <= m_maxEnemiesSpawned && m_nextSpawnTime - currentTime < 0 && m_enemySpawners.size() > 0) {
+		if (m_currentEnemies < m_maxEnemiesSpawned && m_nextSpawnTime - currentTime < 0 && m_enemySpawners.size() > 0) {
 			auto spawnerIndex = FMath::RandRange(0, m_enemySpawners.size() - 1);
 			m_enemySpawners.at(spawnerIndex)->SpawnEnemy();
 			++m_currentEnemies;

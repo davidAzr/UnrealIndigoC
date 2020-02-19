@@ -17,8 +17,11 @@ public:
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	class UStaticMeshComponent* m_enemyMesh;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	//class UStaticMeshComponent* m_enemyMesh;
+
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* m_skeletalMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	class UFloatingPawnMovement* m_movementComponent;

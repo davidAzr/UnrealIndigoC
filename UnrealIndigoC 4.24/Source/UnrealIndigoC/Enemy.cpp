@@ -4,9 +4,11 @@
 //#include "GameFramework/FloatingPawnMovement.h"
 #include "EnemyMovement.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Level/CameraRegion.h"
 #include "Engine/World.h"
 #include "IndigoCharacter.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -14,8 +16,11 @@ AEnemy::AEnemy()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	m_enemyMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	SetRootComponent(m_enemyMesh);
+	//m_enemyMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
+	//SetRootComponent(m_enemyMesh);
+	m_skeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Skeletal Mesh");
+	SetRootComponent(m_skeletalMesh);
+	
 	m_movementComponent = CreateDefaultSubobject<UEnemyMovement>("Movement Component");
 	m_currentHealth = m_maxHealth;
 }
@@ -24,7 +29,8 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	m_enemyMesh->SetNotifyRigidBodyCollision(true);
+	//m_enemyMesh->SetNotifyRigidBodyCollision(true);
+	m_skeletalMesh->SetNotifyRigidBodyCollision(true);
 	m_lastAttackTime = 0.f;
 }
 
@@ -82,7 +88,8 @@ void AEnemy::RecieveDamage(float damage)
 	m_currentHealth -= damage;
 	if (m_currentHealth <= 0) {
 		Destroy();
-		m_cameraRegion->DecreaseEnemyCount();
+		if (m_cameraRegion)
+			m_cameraRegion->DecreaseEnemyCount();
 	}
 }
 
