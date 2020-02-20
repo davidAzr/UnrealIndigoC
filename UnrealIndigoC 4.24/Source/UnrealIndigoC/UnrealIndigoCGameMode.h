@@ -13,6 +13,26 @@ class AUnrealIndigoCGameMode : public AGameModeBase
 
 public:
 	AUnrealIndigoCGameMode();
+
+protected:
+
+	TArray<class ACameraRegion*> m_cameraRegions;
+
+	class APowerUp* m_timerPowerUp;
+
+	void BeginPlay() override;
+
+	void Tick(float DeltaSeconds) override;
+
+	float m_lastTimerReset = 0.f;
+	
+	float m_timerMax = 10.f;
+	
+	float m_currentTimer;
+
+	UFUNCTION()
+	void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
 };
 
 

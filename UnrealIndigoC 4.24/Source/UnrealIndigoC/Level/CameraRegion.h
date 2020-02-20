@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Components")
 	class UEnemySpawnController* m_spawnController;
 
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	bool m_isFirstRegion = false;
+
 	// True when is the region where the player is
 	bool m_isActiveRegion;
 

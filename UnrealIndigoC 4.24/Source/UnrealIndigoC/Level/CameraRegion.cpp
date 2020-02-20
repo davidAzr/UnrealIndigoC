@@ -40,10 +40,17 @@ void ACameraRegion::BeginPlay()
 	m_triggerVolume->SetGenerateOverlapEvents(true);
 	m_triggerVolume->SetVisibility(false);
 
+	if (m_isFirstRegion) {
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this, 0.5, EViewTargetBlendFunction::VTBlend_Cubic);
+		m_isActiveRegion = true;
+		if (m_spawnController) {
+			m_spawnController->StartSpawning();
+		}
+	}
+
 	// Event Binding
 	m_triggerVolume->OnComponentEndOverlap.AddDynamic(this, &ACameraRegion::OnEndOverlap);
 	m_triggerVolume->OnComponentBeginOverlap.AddDynamic(this, &ACameraRegion::OnBeginOverlap);
-	
 }
 
 // When an actor enters the camera region we check if it is the player actor
