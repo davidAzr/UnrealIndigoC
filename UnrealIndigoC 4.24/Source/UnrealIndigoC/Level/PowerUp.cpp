@@ -32,3 +32,8 @@ void APowerUp::Tick(float DeltaTime)
 	this->SetActorLocationAndRotation(newLocation, newRotation);
 }
 
+bool APowerUp::isValid() const
+{
+	return m_isValid;
+}
+

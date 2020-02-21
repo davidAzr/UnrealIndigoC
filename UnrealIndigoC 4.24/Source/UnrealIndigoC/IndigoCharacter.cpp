@@ -34,3 +34,8 @@ void AIndigoCharacter::RecieveDamage(float damage)
 	}
 }
 
+float AIndigoCharacter::GetCurrentHealth() const
+{
+	return m_currentHealth;
+}
+

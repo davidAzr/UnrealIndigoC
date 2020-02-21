@@ -22,6 +22,9 @@ public:
 
 	void RecieveDamage(float damage);
 
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentHealth() const;
+
 protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")

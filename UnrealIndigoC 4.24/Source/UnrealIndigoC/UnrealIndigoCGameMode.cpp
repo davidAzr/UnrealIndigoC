@@ -24,6 +24,11 @@ AUnrealIndigoCGameMode::AUnrealIndigoCGameMode()
 	}
 }
 
+float AUnrealIndigoCGameMode::GetCurrentTimer() const
+{
+	return m_currentTimer;
+}
+
 void AUnrealIndigoCGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -35,7 +40,9 @@ void AUnrealIndigoCGameMode::BeginPlay()
 
 	for (TActorIterator<APowerUp> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{
-		m_timerPowerUp = *ActorItr;
+		if ((*ActorItr)->isValid()) {
+			m_timerPowerUp = *ActorItr;
+		}
 	}
 
 	m_currentTimer = m_timerMax;
@@ -56,9 +63,8 @@ void AUnrealIndigoCGameMode::Tick(float DeltaSeconds)
 		m_lastTimerReset = currentTime;
 	}
 	*/
-
 	m_currentTimer -= DeltaSeconds;
-	if (m_currentTimer <= 0.f) {
+	if (m_currentTimer <= 0.f && m_timerPowerUp) {
 		UGameplayStatics::OpenLevel(GetWorld(), FName("OriginalLevel"));
 	}
 
@@ -72,6 +78,7 @@ void AUnrealIndigoCGameMode::BeginOverlap(AActor* OverlappedActor, AActor* Other
 		UE_LOG(LogTemp, Warning, TEXT("Player step up into timer"))
 		auto nextIdx = FMath::FRandRange(0, m_cameraRegions.Num() - 1);
 		OverlappedActor->SetActorLocation(m_cameraRegions[nextIdx]->GetActorLocation());
-		m_lastTimerReset = GetWorld()->GetTimeSeconds();
+		//m_lastTimerReset = GetWorld()->GetTimeSeconds();
+		m_currentTimer = m_timerMax;
 	}
 }

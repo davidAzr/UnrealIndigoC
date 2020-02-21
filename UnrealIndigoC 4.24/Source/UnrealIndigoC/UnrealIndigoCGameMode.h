@@ -14,6 +14,9 @@ class AUnrealIndigoCGameMode : public AGameModeBase
 public:
 	AUnrealIndigoCGameMode();
 
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentTimer() const;
+
 protected:
 
 	TArray<class ACameraRegion*> m_cameraRegions;
