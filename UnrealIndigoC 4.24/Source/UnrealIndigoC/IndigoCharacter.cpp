@@ -30,7 +30,7 @@ void AIndigoCharacter::RecieveDamage(float damage)
 {
 	m_currentHealth -= damage;
 	if (m_currentHealth <= 0) {
-		Destroy();
+		PlayerDie.Broadcast(GetWorld()->GetTimeSeconds());
 	}
 }
 

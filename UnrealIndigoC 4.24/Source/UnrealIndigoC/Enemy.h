@@ -39,6 +39,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	float m_maxHealth = 50.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	float m_score = 10.f;
+
 	// Member variables
 	float m_lastAttackTime;
 

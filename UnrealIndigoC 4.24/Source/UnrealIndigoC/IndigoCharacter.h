@@ -6,6 +6,8 @@
 #include "UnrealIndigoCCharacter.h"
 #include "IndigoCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerDead, float, time);
+
 /**
  * 
  */
@@ -24,6 +26,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetCurrentHealth() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnPlayerDead PlayerDie;
 
 protected:
 	

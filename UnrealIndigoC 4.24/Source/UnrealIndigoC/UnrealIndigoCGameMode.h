@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "UnrealIndigoCGameMode.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTimerRunsOut, float, time);
+
 UCLASS(minimalapi)
 class AUnrealIndigoCGameMode : public AGameModeBase
 {
@@ -16,6 +18,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetCurrentTimer() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetPlayerScore() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FTimerRunsOut TimeRunsOut;
+
+	void AddScoreToPlayer(float score);
+
 
 protected:
 
@@ -29,9 +40,12 @@ protected:
 
 	float m_lastTimerReset = 0.f;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Configuration")
 	float m_timerMax = 10.f;
 	
 	float m_currentTimer;
+
+	float m_playerScore;
 
 	UFUNCTION()
 	void BeginOverlap(AActor* OverlappedActor, AActor* OtherActor);

@@ -1,14 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Enemy.h"
-//#include "GameFramework/FloatingPawnMovement.h"
-#include "EnemyMovement.h"
+
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "Level/CameraRegion.h"
-#include "Engine/World.h"
-#include "IndigoCharacter.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine/World.h"
+
+#include "EnemyMovement.h"
+#include "Level/CameraRegion.h"
+#include "UnrealIndigoCGameMode.h"
+#include "IndigoCharacter.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -93,8 +95,11 @@ void AEnemy::RecieveDamage(float damage)
 	m_currentHealth -= damage;
 	if (m_currentHealth <= 0) {
 		Destroy();
+		AUnrealIndigoCGameMode * mymode = Cast<AUnrealIndigoCGameMode>(GetWorld()->GetAuthGameMode());
+		mymode->AddScoreToPlayer(m_score);
 		if (m_cameraRegion)
 			m_cameraRegion->DecreaseEnemyCount();
+
 	}
 }
 

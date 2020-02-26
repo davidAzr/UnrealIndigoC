@@ -29,6 +29,16 @@ float AUnrealIndigoCGameMode::GetCurrentTimer() const
 	return m_currentTimer;
 }
 
+float AUnrealIndigoCGameMode::GetPlayerScore() const
+{
+	return m_playerScore;
+}
+
+void AUnrealIndigoCGameMode::AddScoreToPlayer(float score)
+{
+	m_playerScore += score;
+}
+
 void AUnrealIndigoCGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -45,6 +55,7 @@ void AUnrealIndigoCGameMode::BeginPlay()
 		}
 	}
 
+	m_playerScore = 0;
 	m_currentTimer = m_timerMax;
 
 	// Binding Events
@@ -65,7 +76,8 @@ void AUnrealIndigoCGameMode::Tick(float DeltaSeconds)
 	*/
 	m_currentTimer -= DeltaSeconds;
 	if (m_currentTimer <= 0.f && m_timerPowerUp) {
-		UGameplayStatics::OpenLevel(GetWorld(), FName("OriginalLevel"));
+
+		TimeRunsOut.Broadcast(GetWorld()->GetTimeSeconds());
 	}
 
 	//UE_LOG(LogTemp, Warning, TEXT("%f"), currentTime)
