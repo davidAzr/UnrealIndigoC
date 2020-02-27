@@ -16,8 +16,6 @@ AEnemySpawner::AEnemySpawner()
 	PrimaryActorTick.bCanEverTick = true;
 	m_collisionBox = CreateDefaultSubobject<UBoxComponent>("Collision Box");
 
-	FAttachmentTransformRules attachmentRules(EAttachmentRule::KeepRelative, true);
-	m_collisionBox->AttachToComponent(RootComponent, attachmentRules);
 
 	static ConstructorHelpers::FClassFinder<AEnemy> ClassFinder(TEXT("Blueprint'/Game/IndigoGame/Enemies/BP_Enemy.BP_Enemy_C'"));
 	if (ClassFinder.Class)
@@ -28,6 +26,7 @@ AEnemySpawner::AEnemySpawner()
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
 	if (m_cameraRegion) {
 		m_cameraRegion->AddSpawnToController(this);
 	}

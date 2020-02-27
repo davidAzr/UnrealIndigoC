@@ -19,8 +19,6 @@ ACameraRegion::ACameraRegion()
 	m_triggerVolume->SetupAttachment(RootComponent);
 	m_cameraComponent = CreateDefaultSubobject<UCameraComponent>("Camera");
 	
-	FAttachmentTransformRules attachmentRules(EAttachmentRule::KeepRelative, true);
-	m_cameraComponent->AttachToComponent(RootComponent, attachmentRules);
 
 	m_spawnController = CreateDefaultSubobject<UEnemySpawnController>("Spawn Controller");
 	m_spawnController->SetCameraRegion(this);
@@ -36,6 +34,9 @@ bool ACameraRegion::GetIsActiveCameraRegion()
 // Called when the game starts or when spawned
 void ACameraRegion::BeginPlay()
 {
+	FAttachmentTransformRules attachmentRules(EAttachmentRule::KeepRelative, true);
+	m_cameraComponent->AttachToComponent(RootComponent, attachmentRules);
+
 	Super::BeginPlay();
 	m_triggerVolume->SetGenerateOverlapEvents(true);
 	m_triggerVolume->SetVisibility(false);
